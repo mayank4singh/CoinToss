@@ -4,10 +4,8 @@ import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -15,39 +13,86 @@ import android.widget.Toast;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView imageView;
+
     Button button;
     MediaPlayer m1;
     Random myradom = new Random();
-    int NewDirection,lastDirection;
+    private int curSide;
+    private ImageView coinImage;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = findViewById(R.id.imageView);
+        coinImage = findViewById(R.id.imageView);
         button = findViewById(R.id.button);
-        m1 = MediaPlayer.create(this,R.raw.coin);
-
+        m1 = MediaPlayer.create(this, R.raw.coin);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 m1.start();
-                int myran = myradom.nextInt(2)+1;
-                switch (myran){
-                    case 1:
-                        imageView.setImageResource(R.drawable.heads);
-                        Toast.makeText(MainActivity.this,"This is heads",Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        imageView.setImageResource(R.drawable.tails);
-                        Toast.makeText(MainActivity.this,"This is Tails",Toast.LENGTH_SHORT).show();
-                        break;
+                int myran = myradom.nextInt(2) + 1;
+                switch (myran) {
+                    case 1: boolean stayTheSame = (curSide == R.drawable.tails);
+                            long timeOfAnimation = animateCoin(stayTheSame);
+                            curSide = R.drawable.heads;
+                            Toast.makeText(MainActivity.this, "This is Tails", Toast.LENGTH_SHORT).show();
+                            break;
+
+                    case 2: stayTheSame = (curSide == R.drawable.heads);
+                            timeOfAnimation = animateCoin(stayTheSame);
+                            curSide = R.drawable.tails;
+                            Toast.makeText(MainActivity.this, "This is Heads", Toast.LENGTH_SHORT).show();
+                            break;
                 }
+
 
             }
 
         });
 
     }
+        private long animateCoin ( boolean stayTheSame){
+
+            Rotation3D animation;
+
+            if (curSide == R.drawable.heads) {
+                animation = new Rotation3D(coinImage, R.drawable.heads, R.drawable.tails, 0, 180, 0, 0, 0, 0);
+            } else {
+                animation = new Rotation3D(coinImage, R.drawable.tails, R.drawable.heads, 0, 180, 0, 0, 0, 0);
+            }
+            if (stayTheSame) {
+                animation.setRepeatCount(5); // must be odd (5+1 = 6 flips so the side will stay the same)
+            } else {
+                animation.setRepeatCount(6); // must be even (6+1 = 7 flips so the side will not stay the same)
+            }
+
+            animation.setDuration(110);
+            animation.setInterpolator(new LinearInterpolator());
+
+
+            coinImage.startAnimation(animation);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    button.setEnabled(false);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    button.setEnabled(true);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+            return animation.getDuration();
+        }
+
+
 }
