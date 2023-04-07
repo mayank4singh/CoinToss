@@ -58,21 +58,24 @@ public class MainActivity extends AppCompatActivity {
 
             Rotation3D animation;
 
-            if (curSide == R.drawable.heads) {
+            if (curSide == R.drawable.heads)
+                {
                 animation = new Rotation3D(coinImage, R.drawable.heads, R.drawable.tails, 0, 180, 0, 0, 0, 0);
-            } else {
+                }
+            else
+                {
                 animation = new Rotation3D(coinImage, R.drawable.tails, R.drawable.heads, 0, 180, 0, 0, 0, 0);
-            }
-            if (stayTheSame) {
-                animation.setRepeatCount(5); // must be odd (5+1 = 6 flips so the side will stay the same)
-            } else {
-                animation.setRepeatCount(6); // must be even (6+1 = 7 flips so the side will not stay the same)
-            }
-
-            animation.setDuration(110);
+                }
+                if (stayTheSame)
+                    {
+                    animation.setRepeatCount(5); // must be odd (5+1 = 6 flips so the side will stay the same)
+                    }
+                else
+                    {
+                    animation.setRepeatCount(6); // must be even (6+1 = 7 flips so the side will not stay the same)
+                    }
+            animation.setDuration(130);
             animation.setInterpolator(new LinearInterpolator());
-
-
             coinImage.startAnimation(animation);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
