@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     Button button;
     MediaPlayer m1;
     Random myradom = new Random();
-    private int curSide;
+    private int curSide = R.drawable.heads;
     private ImageView coinImage;
 
 
@@ -35,17 +35,17 @@ public class MainActivity extends AppCompatActivity {
                 m1.start();
                 int myran = myradom.nextInt(2) + 1;
                 switch (myran) {
-                    case 1: boolean stayTheSame = (curSide == R.drawable.tails);
-                            long timeOfAnimation = animateCoin(stayTheSame);
-                            curSide = R.drawable.heads;
-                            Toast.makeText(MainActivity.this, "This is Tails", Toast.LENGTH_SHORT).show();
-                            break;
+                    case 1: boolean stayTheSame = (curSide == R.drawable.heads);
+                        long timeOfAnimation = animateCoin(stayTheSame);
+                        curSide = R.drawable.tails;
+                        Toast.makeText(MainActivity.this, "This is Heads", Toast.LENGTH_SHORT).show();
+                        break;
 
-                    case 2: stayTheSame = (curSide == R.drawable.heads);
-                            timeOfAnimation = animateCoin(stayTheSame);
-                            curSide = R.drawable.tails;
-                            Toast.makeText(MainActivity.this, "This is Heads", Toast.LENGTH_SHORT).show();
-                            break;
+                    case 2: stayTheSame = (curSide == R.drawable.tails);
+                        timeOfAnimation = animateCoin(stayTheSame);
+                        curSide = R.drawable.heads;
+                        Toast.makeText(MainActivity.this, "This is Tails", Toast.LENGTH_SHORT).show();
+                        break;
                 }
 
 
@@ -80,11 +80,13 @@ public class MainActivity extends AppCompatActivity {
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
+
                     button.setEnabled(false);
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
+
                     button.setEnabled(true);
                 }
 
