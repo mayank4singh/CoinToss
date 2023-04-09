@@ -14,6 +14,6 @@ https://user-images.githubusercontent.com/117936126/230559034-89ec2a07-e195-4178
 
 ## Download
 
-Go to the [Releases](https://github.com/mayank4singh/CoinToss/blob/main/app/release/app-release.aab) to download the latest APK.
+Go to the [Releases](https://github.com/mayank4singh/CoinToss/releases/tag/Latest) to download the latest APK.
 
 # Don't forget to star and fork the repo
